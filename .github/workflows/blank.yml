@@ -1,35 +1,50 @@
-name: "Godot Web Export & Deploy"
+name: Deploy Godot Web to GitHub Pages
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   export-web:
-    name: Web Export
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
-      - name: Checkout repository
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Build / Export Godot Project to Web
+      - name: Export Godot Web
         uses: firebelley/godot-export@v6.0.0
         with:
-          # Cập nhật đường dẫn tải bản Godot 4.7.1 Linux cho GitHub Actions
-          godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.7.1/Godot_v4.7.1-stable_linux.x86_64.zip
-          godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.7.1/Godot_v4.7.1-stable_export_templates.tpz
-          relative_project_path: "./"
-          archive_output: false
+          godot-version: 4.7.1
+          export-name: Web
+          project-path: .
+          output-dir: build/web
 
-      - name: Fix Godot 4 Service Worker for GitHub Pages
-        run: |
-          curl -s https://raw.githubusercontent.com/gzguidoti/coi-serviceworker/main/coi-serviceworker.js > build/web/coi-serviceworker.js
-
-      - name: Deploy to GitHub Pages
-        uses: Peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
+          path: build/web
+
+  deploy:
+    needs: export-web
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
