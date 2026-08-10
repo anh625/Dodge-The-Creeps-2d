@@ -66,6 +66,7 @@ func set_health_point(health_point):
 #		queue_free()
 		hide()
 		hit.emit()
+		$CollisionShape2D.set_deferred("disabled", true)
 		
 	$Label.text = str(health_point_current)
 		
