@@ -19,5 +19,9 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 func _on_area_2d_area_entered(area):
 	if area.has_method("take_damage"):
 		area.take_damage(damage)
-	queue_free()
-
+		hide() # Ẩn quái ngay lập tức
+		$CollisionShape2D.set_deferred("disabled", true) # Tắt va chạm để tránh quái ẩn vẫn gây sát thương
+		$DieSound.play()
+		await $DieSound.finished # Đợi cho âm thanh phát xong hoàn toàn
+		queue_free() # Xóa node sau khi âm thanh kết thúc
+	

@@ -88,4 +88,3 @@ func set_max_health_point(health_point):
 func take_damage(damage):
 	set_health_point(health_point_current - damage)
 	
-

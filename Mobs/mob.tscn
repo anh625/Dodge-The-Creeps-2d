@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://dlatpqddw4exf"]
+[gd_scene format=3 uid="uid://dlatpqddw4exf"]
 
-[ext_resource type="Script" path="res://Mobs/mob.gd" id="1_yvmr7"]
+[ext_resource type="Script" uid="uid://bpxatka5y2qi1" path="res://Mobs/mob.gd" id="1_yvmr7"]
 [ext_resource type="Texture2D" uid="uid://dl8x3tse7wdm7" path="res://dodge_the_creeps_2d_assets/art/enemyFlyingAlt_1.png" id="2_6p1js"]
 [ext_resource type="Texture2D" uid="uid://bp3flqhvrbeic" path="res://dodge_the_creeps_2d_assets/art/enemyFlyingAlt_2.png" id="3_8lh5q"]
 [ext_resource type="Texture2D" uid="uid://d3vtc8q8s4hui" path="res://dodge_the_creeps_2d_assets/art/enemySwimming_1.png" id="4_xdmgl"]
 [ext_resource type="Texture2D" uid="uid://dd8jh4v3dky3s" path="res://dodge_the_creeps_2d_assets/art/enemySwimming_2.png" id="5_n4lt3"]
 [ext_resource type="Texture2D" uid="uid://bi06qodoljwtd" path="res://dodge_the_creeps_2d_assets/art/enemyWalking_1.png" id="6_u3q7y"]
 [ext_resource type="Texture2D" uid="uid://bdr8628e04yhp" path="res://dodge_the_creeps_2d_assets/art/enemyWalking_2.png" id="7_ts2rr"]
+[ext_resource type="AudioStream" uid="uid://dcf8vqb31bl0m" path="res://dodge_the_creeps_2d_assets/art/gameover.wav" id="9_lw2qo"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ixnax"]
 animations = [{
@@ -17,7 +18,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_8lh5q")
 }],
-"loop": true,
+"loop": 1,
 "name": &"fly",
 "speed": 3.0
 }, {
@@ -28,7 +29,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("5_n4lt3")
 }],
-"loop": true,
+"loop": 1,
 "name": &"swim",
 "speed": 3.0
 }, {
@@ -39,7 +40,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("7_ts2rr")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk",
 "speed": 3.0
 }]
@@ -48,29 +49,33 @@ animations = [{
 radius = 37.0
 height = 100.0
 
-[node name="Mob" type="RigidBody2D" groups=["mobs"]]
+[node name="Mob" type="RigidBody2D" unique_id=1256692803 groups=["mobs"]]
 collision_mask = 0
 gravity_scale = 0.0
 script = ExtResource("1_yvmr7")
 metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="DieSound" type="AudioStreamPlayer" parent="." unique_id=1362285848]
+stream = ExtResource("9_lw2qo")
+volume_db = 24.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=369852204]
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_ixnax")
 animation = &"walk"
 frame = 1
 frame_progress = 0.0602915
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=431621899]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_8db46")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1452342702]
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=150236128]
 collision_layer = 2
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" unique_id=1148151882]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_8db46")
 
